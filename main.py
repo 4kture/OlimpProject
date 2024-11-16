@@ -5,10 +5,15 @@ import os
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-def get_db_connection():
-    conn = sqlite3.connect('Main.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+def by_fourture():
+    print("\033[36m------------------------------------------------------------\033[0m")
+    print("\033[36m _____                      _____                    \033[0m")
+    print("\033[36m|  ___|  ___   _   _  _ __ |_   _| _   _  _ __   ___ \033[0m")
+    print("\033[36m| |_    / _ \ | | | || '__|  | |  | | | || '__| / _ \\\033[0m")
+    print("\033[36m|  _|  | (_) || |_| || |     | |  | |_| || |   |  __/\033[0m")
+    print("\033[36m|_|     \___/  \__,_||_|     |_|   \__,_||_|    \___|\033[0m")
+    print("\033[35mLogged in as FourTureProject. User: @fourprogect_bot\033[0m")
+    print("\033[36m------------------------------------------------------------\033[0m")
 
 def init_db():
     conn = sqlite3.connect('Main.db')
@@ -35,7 +40,12 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()
+def get_db_connection():
+    conn = sqlite3.connect('Main.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
 
 @app.route('/')
 def index():
@@ -82,4 +92,6 @@ def login():
         return redirect(url_for('index'))
 
 if __name__ == '__main__':
+    init_db()
+    by_fourture()
     app.run(debug=True)
