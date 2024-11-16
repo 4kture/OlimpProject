@@ -44,8 +44,6 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
