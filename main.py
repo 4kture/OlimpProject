@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 import sqlite3
 
 app = Flask(__name__)
+
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
 def init_db():
     conn = sqlite3.connect('Main.db')
@@ -33,44 +38,12 @@ def init_db():
     conn.commit()
     conn.close()
 
+get_db_connection()
 init_db()
 
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    message = ''
-    tasks = []
-
-    if request.method == 'POST':
-        if 'register' in request.form:
-            login_name = request.form['login_name']
-            password = request.form['password']
-            email = request.form['email']
-
-            conn = sqlite3.connect('Main.db')
-            cursor = conn.cursor()
-            cursor.execute('''
-                INSERT INTO Users (login_name, password, email)
-                VALUES (?, ?, ?)
-            ''', (login_name, password, email))
-            conn.commit()
-            conn.close()
-
-            message = 'Registration successful!'
-
-        elif 'login' in request.form:
-            login_name = request.form['login_name']
-            password = request.form['password']
-
-            conn = sqlite3.connect('Main.db')
-            cursor = conn.cursor()
-            cursor.execute('''
-            SELECT * FROM Users WHERE login_name = ? AND password = ?
-            ''', (login_name, password))
-            user = cursor.fetchone()
-            conn.close()
-
-    return render_template('index.html', tasks=tasks, message=message)
+    return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8080)
