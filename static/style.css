@@ -49,11 +49,6 @@ body {
     background-color: darkgray;
 }
 
-main {
-    padding: 20px;
-    text-align: center;
-}
-
 .popup {
     display: none;
     position: fixed;
@@ -128,16 +123,16 @@ main {
 
 .flash-messages {
     position: fixed;
-    top: 20px; /* Отступ от верхнего края */
+    top: 20px;
     left: 50%;
-    transform: translateX(-50%); /* Центрирует сообщение по горизонтали */
-    z-index: 9999; /* Обеспечивает, чтобы сообщение было поверх остального контента */
+    transform: translateX(-50%);
+    z-index: 9999;
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
     padding: 10px 20px;
     border-radius: 5px;
-    display: none; /* Скрыто по умолчанию */
+    display: none;
 }
 
 .flash-messages.success {
