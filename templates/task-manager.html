@@ -10,15 +10,8 @@
     <title>Работа с тасками</title>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var flashMessages = document.querySelector('.flash-messages');
-        if (flashMessages) {
-            flashMessages.style.display = 'block';
-            setTimeout(function() {
-                flashMessages.style.display = 'none';
-            }, 3000);
-        }
-    });
+
+
 </script>
 
 </head>
@@ -46,6 +39,31 @@
             </form>
         </div>
 </header>
+
+<div class="container">
+    <div class="task-panel">
+        <h2>Create a New Task</h2>
+        <form id="task-form" action="#" method="POST" class="task-form">
+            <input type="text" name="task_name" id="task_name" placeholder="Task Name" required>
+            <textarea name="task_description" id="task_description" placeholder="Task Description" required></textarea>
+            <button type="submit">Create Task</button>
+        </form>
+    </div>
+
+    <div class="task-list">
+        <h2>Tasks</h2>
+    </div>
+
+    <div class="task-popup" id="task-popup">
+        <div class="task-popup-content">
+            <h3 id="popup-task-name"></h3>
+            <p id="popup-task-description"></p>
+            <button onclick="closeTaskPopup()">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>

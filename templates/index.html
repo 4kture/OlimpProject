@@ -8,30 +8,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Начальная страница</title>
 
-    <script>
-        function showPopup(id) {
-            document.getElementById(id).style.display = 'block';
-        }
-
-        function hidePopup(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-
-        function showTasksLink() {
-            document.getElementById('tasks-link').style.display = 'block';
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-        var flashMessages = document.querySelector('.flash-messages');
-        if (flashMessages) {
-            flashMessages.style.display = 'block';
-            setTimeout(function() {
-                flashMessages.style.display = 'none';
-            }, 3000);
-        }
-    });
-    </script>
-
 </head>
 
 <body>
@@ -83,6 +59,8 @@
         <button class="close-btn" onclick="hidePopup('register-popup')">Закрыть</button>
     </div>
 </div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>
