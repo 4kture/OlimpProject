@@ -250,7 +250,6 @@ body {
     background-color: #0056b3;
 }
 
-/* Всплывающее окно */
 .task-popup {
     position: fixed;
     top: 0;
