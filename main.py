@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 import os
+import time
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -91,6 +92,12 @@ def login():
     else:
         flash('Неверный логин или пароль.', 'error')
         return redirect(url_for('index'))
+
+@app.route('/exit', methods=['POST'])
+def a_exit():
+    session.pop('user_id', None)
+    flash('Выход успешен!', 'success')
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     init_db()

@@ -9,8 +9,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Работа с тасками</title>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var flashMessages = document.querySelector('.flash-messages');
+        if (flashMessages) {
+            flashMessages.style.display = 'block';
+            setTimeout(function() {
+                flashMessages.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
+
 </head>
 <body>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-messages {% for category, message in messages %}{{ category }}{% endfor %}">
+      {% for category, message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
 <header id="top-menu">
     <div class="top-text">
@@ -19,9 +41,10 @@
         </div>
 
         <div class="top-buttons">
-            <a href="{{ url_for('index') }}" class="btn" id="exit-button">Выход</a>
+            <form method="POST" action="{{ url_for('a_exit') }}">
+                <button type="submit" class="btn" id="exit-button">Выход</button>
+            </form>
         </div>
-    </div>
 </header>
 
 </body>

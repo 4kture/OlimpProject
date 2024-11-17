@@ -27,7 +27,7 @@
             flashMessages.style.display = 'block';
             setTimeout(function() {
                 flashMessages.style.display = 'none';
-            }, 5000);
+            }, 3000);
         }
     });
     </script>
@@ -73,7 +73,7 @@
 
 <div id="register-popup" class="popup">
     <div class="popup-content">
-        <h2>Создать аккаунта</h2>
+        <h2>Создать аккаунт</h2>
         <form method="POST" action="{{ url_for('register') }}">
             <input type="text" name="login_name" placeholder="Логин" required><br>
             <input type="password" name="password" placeholder="Пароль" required><br>
