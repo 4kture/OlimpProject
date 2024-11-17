@@ -27,12 +27,13 @@ body {
     font-weight: bold;
 }
 
-.auth-buttons {
+.top-buttons {
     display: flex;
     gap: 10px;
 }
 
-.auth-buttons .btn {
+.top-buttons .btn {
+    display: inline-block;
     background-color: gray;
     color: white;
     border: none;
@@ -43,9 +44,10 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     transition: background-color 0.3s, transform 0.3s;
+    text-decoration: none;
 }
 
-.auth-buttons .btn:hover {
+.top-buttons .btn:hover {
     background-color: darkgray;
 }
 

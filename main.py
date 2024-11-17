@@ -48,6 +48,10 @@ def get_db_connection():
 def index():
     return render_template('index.html')
 
+@app.route('/task-manager')
+def task_manager():
+    return render_template('task-manager.html')
+
 @app.route('/register', methods=['POST'])
 def register():
     login_name = request.form['login_name']
@@ -83,7 +87,7 @@ def login():
 
     if user:
         flash('Вход успешен!', 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('task_manager'))
     else:
         flash('Неверный логин или пароль.', 'error')
         return redirect(url_for('index'))
