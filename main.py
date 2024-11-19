@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 import os
-import time
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)

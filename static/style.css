@@ -28,7 +28,7 @@ body {
 }
 
 .top-buttons {
-    display: flex;
+    display: block;
     gap: 10px;
 }
 
@@ -45,6 +45,7 @@ body {
     text-transform: uppercase;
     transition: background-color 0.3s, transform 0.3s;
     text-decoration: none;
+    margin-left: 5px
 }
 
 .top-buttons .btn:hover {
