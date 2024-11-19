@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import sqlite3
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.secret_key = os.urandom(24)
 
 def by_fourture():
@@ -15,7 +15,7 @@ def by_fourture():
     print("\033[36m------------------------------------------------------------\033[0m")
 
 def init_db():
-    conn = sqlite3.connect('Main.db')
+    conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS Users (
@@ -40,7 +40,7 @@ def init_db():
     conn.close()
 
 def get_db_connection():
-    conn = sqlite3.connect('Main.db')
+    conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
 
