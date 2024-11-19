@@ -20,5 +20,6 @@ content of information.
 
 # Usage
 1. `pip install Flask`
-2. `git clone https://github.com/4kture/OlimpProject`
-3. `python main.py`
+2. `pip install PyQt5`
+3. `git clone https://github.com/4kture/OlimpProject`
+4. Run `appstart.exe`
