@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import sqlite3
 import os
 
@@ -49,17 +49,6 @@ def get_db_connection():
 def index():
     return render_template('index.html')
 
-@app.route('/task-manager')
-def task_manager():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    cursor.execute('SELECT * FROM Tasks')
-    tasks = cursor.fetchall()
-
-    conn.close()
-    return render_template('task-manager.html')
-
 @app.route('/register', methods=['POST'])
 def register():
     login_name = request.form['login_name']
@@ -106,21 +95,9 @@ def a_exit():
     flash('Выход успешен!', 'success')
     return redirect(url_for('index'))
 
-@app.route('/create_task', methods=['POST'])
-def create_task():
-    task_name = request.form['task_name']
-    task_description = request.form['task_description']
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    cursor.execute('INSERT INTO Tasks (task_name) VALUES (?)',
-                   (task_name, task_description))
-    conn.commit()
-    conn.close()
-
-    flash('Task created successfully!', 'success')
-    return redirect(url_for('task_manager'))
+@app.route('/task-manager', methods=['GET', 'POST'])
+def task_manager():
+    return render_template('task-manager.html')
 
 if __name__ == '__main__':
     init_db()
