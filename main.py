@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-import mysql.connector
+import sqlite3
 import os
 
 app = Flask(__name__, template_folder='templates')
@@ -14,44 +14,36 @@ def by_fourture():
     print("\033[36m|_|     \___/  \__,_||_|     |_|   \__,_||_|    \___|\033[0m")
     print("\033[36m------------------------------------------------------------\033[0m")
 
-def get_db_connection():
-    return mysql.connector.connect(
-        host="localhost",
-        user="your_user",
-        password="your_password",
-    )
-
 def init_db():
-    conn = get_db_connection()
+    conn = sqlite3.connect('Main.db')
     cursor = conn.cursor()
 
-    create_users_table = """
-    CREATE TABLE IF NOT EXISTS Users (
-        user_id INT AUTO_INCREMENT PRIMARY KEY,
-        login_name VARCHAR(255) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL UNIQUE,
+    cursor.execute('''CREATE TABLE IF NOT EXISTS Users (
+        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        login_name TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
         registration_date DATE DEFAULT CURRENT_DATE
-    );
-    """
-    cursor.execute(create_users_table)
+    )''')
 
-    create_tasks_table = """
-    CREATE TABLE IF NOT EXISTS Tasks (
-        task_id INT AUTO_INCREMENT PRIMARY KEY,
-        task_name VARCHAR(255) NOT NULL,
-        assigned_user INT,
+    cursor.execute('''CREATE TABLE IF NOT EXISTS Tasks (
+        task_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        task_name TEXT NOT NULL,
+        task_description TEXT NOT NULL,
+        assigned_user INTEGER,
         start_date DATE DEFAULT CURRENT_DATE,
         due_date DATE,
-        status VARCHAR(50) DEFAULT 'Pending',
+        status TEXT DEFAULT 'Pending',
         FOREIGN KEY (assigned_user) REFERENCES Users(user_id)
-    );
-    """
-    cursor.execute(create_tasks_table)
+    )''')
 
     conn.commit()
-    cursor.close()
     conn.close()
+
+def get_db_connection():
+    conn = sqlite3.connect('Main.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
 @app.route('/')
 def index():
@@ -59,6 +51,13 @@ def index():
 
 @app.route('/task-manager')
 def task_manager():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM Tasks')
+    tasks = cursor.fetchall()
+
+    conn.close()
     return render_template('task-manager.html')
 
 @app.route('/register', methods=['POST'])
@@ -71,12 +70,12 @@ def register():
     cursor = conn.cursor()
 
     try:
-        cursor.execute('INSERT INTO Users (login_name, password, email) VALUES (%s, %s, %s)',
+        cursor.execute('INSERT INTO Users (login_name, password, email) VALUES (?, ?, ?)',
                        (login_name, password, email))
         conn.commit()
         flash('Регистрация успешна!', 'success')
         return redirect(url_for('index'))
-    except mysql.connector.IntegrityError:
+    except sqlite3.IntegrityError:
         flash('Пользователь с таким логином или почтой уже существует!', 'error')
         return redirect(url_for('index'))
     finally:
@@ -90,7 +89,7 @@ def login():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('SELECT * FROM Users WHERE login_name = %s AND password = %s',
+    cursor.execute('SELECT * FROM Users WHERE login_name = ? AND password = ?',
                    (login_name, password))
     user = cursor.fetchone()
 
@@ -106,6 +105,22 @@ def a_exit():
     session.pop('user_id', None)
     flash('Выход успешен!', 'success')
     return redirect(url_for('index'))
+
+@app.route('/create_task', methods=['POST'])
+def create_task():
+    task_name = request.form['task_name']
+    task_description = request.form['task_description']
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('INSERT INTO Tasks (task_name) VALUES (?)',
+                   (task_name, task_description))
+    conn.commit()
+    conn.close()
+
+    flash('Task created successfully!', 'success')
+    return redirect(url_for('task_manager'))
 
 if __name__ == '__main__':
     init_db()
