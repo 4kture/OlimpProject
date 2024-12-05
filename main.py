@@ -27,14 +27,10 @@ def init_db():
     )''')
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS Tasks (
-        task_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        task_name TEXT NOT NULL,
-        task_description TEXT NOT NULL,
-        assigned_user INTEGER,
-        start_date DATE DEFAULT CURRENT_DATE,
-        due_date DATE,
-        status TEXT DEFAULT 'Pending',
-        FOREIGN KEY (assigned_user) REFERENCES Users(user_id)
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        date_created TEXT DEFAULT CURRENT_TIMESTAMP
     )''')
 
     conn.commit()
@@ -97,7 +93,53 @@ def a_exit():
 
 @app.route('/task-manager', methods=['GET', 'POST'])
 def task_manager():
-    return render_template('task-manager.html')
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if request.method == "POST":
+        title = request.form['title']
+        description = request.form['description']
+        cursor.execute("INSERT INTO Tasks (title, description) VALUES (?, ?)",
+                       (title, description))
+        conn.commit()
+        flash('Задача добавлена!', 'success')
+
+    cursor.execute("SELECT * FROM Tasks")
+    tasks = cursor.fetchall()
+    conn.close()
+
+    return render_template('task-manager.html', tasks=tasks)
+
+@app.route('/delete-task/<int:task_id>')
+def delete_task(task_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM Tasks WHERE id = ?", (task_id,))
+    conn.commit()
+    conn.close()
+    flash('Задача удалена!', 'success')
+    return redirect(url_for('task_manager'))
+
+@app.route('/edit-task/<int:task_id>', methods=['GET', 'POST'])
+def edit_task(task_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        cursor.execute("UPDATE Tasks SET title = ?, description = ? WHERE id = ?",
+                       (title, description, task_id))
+        conn.commit()
+        conn.close()
+        flash('Задача обновлена!', 'success')
+        return redirect(url_for('task_manager'))
+
+    cursor.execute("SELECT * FROM Tasks WHERE id = ?", (task_id,))
+    task = cursor.fetchone()
+    conn.close()
+
+    return render_template('edit-task.html', task=task)
 
 if __name__ == '__main__':
     init_db()

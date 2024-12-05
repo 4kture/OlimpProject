@@ -23,30 +23,30 @@
 {% endif %}
 {% endwith %}
 
-<header id="top-menu">
-    <div class="top-text">
-        <div class="logo">
-            <a href="">OlimpProject</a>
-        </div>
+    <header id="top-menu">
+        <div class="top-text">
+            <div class="logo">
+                <a href="">OlimpProject</a>
+            </div>
 
-        <div class="top-buttons">
-            <button onclick="showPopup('login-popup')" class="btn" id="login-button">Вход</button>
-            <button onclick="showPopup('register-popup')" class="btn" id="register-button">Регистрация</button>
+            <div class="top-buttons">
+                <button onclick="showPopup('login-popup')" class="btn" id="login-button">Вход</button>
+                <button onclick="showPopup('register-popup')" class="btn" id="register-button">Регистрация</button>
+            </div>
+        </div>
+    </header>
+
+    <div id="login-popup" class="popup">
+        <div class="popup-content">
+            <h2>Вход в аккаунт</h2>
+            <form method="POST" action="{{ url_for('login') }}">
+                <input type="text" name="login_name" placeholder="Логин" required><br>
+                <input type="password" name="password" placeholder="Пароль" required><br>
+                <button class="submit-btn" type="submit">Войти</button>
+            </form>
+            <button class="close-btn" onclick="hidePopup('login-popup')">Закрыть</button>
         </div>
     </div>
-</header>
-
-<div id="login-popup" class="popup">
-    <div class="popup-content">
-        <h2>Вход в аккаунт</h2>
-        <form method="POST" action="{{ url_for('login') }}">
-            <input type="text" name="login_name" placeholder="Логин" required><br>
-            <input type="password" name="password" placeholder="Пароль" required><br>
-            <button class="submit-btn" type="submit">Войти</button>
-        </form>
-        <button class="close-btn" onclick="hidePopup('login-popup')">Закрыть</button>
-    </div>
-</div>
 
 <div id="register-popup" class="popup">
     <div class="popup-content">

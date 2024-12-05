@@ -12,6 +12,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .top-text {
@@ -25,50 +26,6 @@ body {
     color: white;
     text-decoration: none;
     font-weight: bold;
-}
-
-.task-manager {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.task-manager form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.task-manager input,
-.task-manager textarea,
-.task-manager button {
-    padding: 10px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.task-manager input[type="text"],
-.task-manager input[type="date"],
-.task-manager textarea {
-    width: 100%;
-    font-size: 16px;
-}
-
-.task-manager button {
-    background-color: #2E8B57;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: bold;
-}
-
-.task-manager button:hover {
-    background-color: #1e6d43;
 }
 
 .top-buttons {
