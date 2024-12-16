@@ -23,3 +23,5 @@ content of information.
 2. `pip install PyQt5`
 3. `git clone https://github.com/4kture/OlimpProject`
 4. Run `appstart.exe`
+
+**Completed**
